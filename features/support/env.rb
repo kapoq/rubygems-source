@@ -2,7 +2,6 @@ require 'rubygems'
 require 'bundler'
 
 Bundler.setup
-require 'aruba/cucumber'
 require 'rack/test'
 
 require 'rubygems-source'
