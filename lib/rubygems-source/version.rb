@@ -1,5 +1,5 @@
 module Rubygems
-  module Server
+  module Source
     VERSION = "0.0.1"
   end
 end

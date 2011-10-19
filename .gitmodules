@@ -1,3 +1,0 @@
-[submodule "features/rubygems-web_api"]
-	path = features/rubygems-web_api
-	url = https://github.com/kapoq/rubygems-web_api.git

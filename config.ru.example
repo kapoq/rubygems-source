@@ -1,0 +1,6 @@
+LIB_PATH = File.expand_path(File.join(File.dirname(__FILE__), 'lib'))
+$:.unshift LIB_PATH
+require "rubygems-source"       
+
+Rubygems::Source::App.public_folder = "/var/rubygems-source/gems" # or wherever
+run Rubygems::Source::App
