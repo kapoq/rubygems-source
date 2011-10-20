@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = Rubygems::Source::VERSION
   s.authors     = ["dave@kapoq.com"]
   s.email       = ["dave@kapoq.com"]
-  s.homepage    = ""
+  s.homepage    = "https://github.com/kapoq/rubygems-source"
   s.summary     = "A Rubygems remote source server"
   s.description = "A Rubygems remote source server that implements the core Rubygems web API (gem indicies, specs, push, and yank). Wins for local and private gem servers."
 
