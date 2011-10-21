@@ -9,52 +9,50 @@ Use it to host private or local dev gem servers.
 Usage
 -----
 
-### Start a server ###
+### Start yr server ###
 
-...or with a `config.ru` like so (from `config.ru.example`):
+Create a `config.ru` like this (there's an example `config.ru.example`
+included):
 
-    require "rubygems"
-    require "rubygems-source"
-
-    Rubygems::Source::App.public_folder = "/var/rubygems-source/gems" # or wherever
+    require "rubygems-source"       
+    
+    Rubygems::Source::App.public_folder = "/var/gems/" # or wherever
     run Rubygems::Source::App
 
 And rack up the `config.ru` with `passenger`, `thin`, `unicorn` etc.
 
-Ensure your `gems` directory is writeable by the user your server runs
-as.
+Ensure `public_folder` is writeable by the server user.
 
-### Client ###
+Adapt `config.ru` to install Rack middleware if you need HTTP
+authentication etc.
 
-#### Bundler ####
+### Configure yr rubygems ###
 
-If you use Bundler, add your new source server to the top of your `Gemfile`s:
+You need to configure rubygems wherever you want to use your new source server.
+
+If you use Bundler, add it to the top of your `Gemfile`s:
 
     source "http://gems.example.com"
-
-#### Rubygems-wide ####
 
 To make the new source server available to your entire Rubygems installation:
 
     $ gem sources --add http://gems.example.com
 
-If you are using `RVM` or `ruby-env`, you must repeat this step for
-each Rubygems installation.
-
-You can also add the new source to your `.gemrc`s directly:
-
-    :sources:
-    - http://rubygems.org/
-    - http://gems.example.com # add this line
+You can also add the new source to your `.gemrc`s directly.
 
 You can now find and install gems from the new source server.
 
-    $ gem list
+    $ gem list -r mygem
     $ gem install mygem
 
 You can also push gems to the server. **Be sure to specify the host**.
 
     $ gem push pkg/mygem-0.0.2.gem --host http://gems.example.com     
+
+Check out
+[rubygems-source-cli](https://github.com/kapoq/rubygems-source-cli)
+for some patches to `gem yank` and `gem push` so they work better with
+non-Rubygems.org sources.
 
 Requirements
 ------------
