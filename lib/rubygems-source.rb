@@ -53,7 +53,7 @@ module Rubygems
       end
 
       # YANK
-      delete "/api/v1/gems/yank" do
+      delete "/api/v1/gems" do
         requirements = params.dup
         name         = requirements.delete("gem_name")
         version      = requirements.delete("version")
@@ -68,7 +68,9 @@ module Rubygems
         unless gems_to_yank.empty?
           gems_to_yank.each { |spec| FileUtils.rm(path_to_gem(spec.file_name)) }
           clear_gem_specs_and_update_gem_indices
+          gems_to_yank.map { |spec| spec.original_name }.join(", ") + " yanked. Have a nice day."
         else
+          "No matching gems found here"
           status 404
         end
       end
