@@ -21,8 +21,8 @@ module Rubygems
           Gem::Indexer.new(settings.public_folder).generate_index
         end
 
-        def valid_gem_package?(file)
-          Gem::Package.open(open(file)) { |pkg| @spec = pkg.metadata }
+        def get_spec(data)
+          Gem::Package.open(StringIO.new(data), "r", nil) { |pkg| pkg.metadata }
         rescue Gem::Package::FormatError
           false
         end
@@ -34,11 +34,20 @@ module Rubygems
 
       # PUSH
       post "/api/v1/gems" do
-        body = StringIO.new(request.body.read)
-        if valid_gem_package?(body)
-          clear_gem_specs_and_update_gem_indices
+        if spec = get_spec(request.body.read)
+          filename = path_to_gem("#{spec.original_name}.gem")
           FileUtils.mkdir_p(path_to_gem) unless File.directory?(path_to_gem)
+          if File.exists?(filename)
+            "#{spec.original_name} already exists and will not be overwritten."
+            status 409
+          else
+            request.body.rewind
+            File.open(filename, "wb") { |f| f.write(request.body.read) }
+            clear_gem_specs_and_update_gem_indices
+            "#{spec.original_name} pushed. Have a nice day."
+          end
         else
+          "Invalid gem"
           status 403
         end
       end
