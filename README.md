@@ -2,28 +2,22 @@ rubygems-source ![travis-ci](https://secure.travis-ci.org/textgoeshere/rubygems-
 ===============
 
 `rubygems-source` is a remote source server for Rubygems that implements the
-core Rubygems web API.
+core Rubygems gem source web API.
 
 Use it to host private or local dev gem servers.
 
 Usage
 -----
 
-### Server ###
+### Start a server ###
 
-Start a source server.
+...or with a `config.ru` like so (from `config.ru.example`):
 
-  * Quick and dirty from the command line:
+    require "rubygems"
+    require "rubygems-source"
 
-        $ gem server --source [OPTIONS]
-
-  * ...or with a `config.ru` like so (from `config.ru.example`):
-
-        require "rubygems"
-        require "rubygems-source"
-
-        Rubygems::Source::App.public_folder = "/var/rubygems-source/gems" # or wherever
-        run Rubygems::Source::App
+    Rubygems::Source::App.public_folder = "/var/rubygems-source/gems" # or wherever
+    run Rubygems::Source::App
 
 And rack up the `config.ru` with `passenger`, `thin`, `unicorn` etc.
 
@@ -89,7 +83,6 @@ you make.
 ### Roadmap ###
 
 * authenticate gem admin actions via API key
-* implement `gem yank` API endpoint
 * implement gem dependency resolver
 * show HTML list of gems/versions/links to rdoc at /
 * remove Sintra dependency in favour of plain Rack for smaller footprint
@@ -102,6 +95,11 @@ you make.
 Related projects
 ----------------
 
+* [rubygems-source-cli](https://github.com/kapoq/rubygems-source-cli):
+  Patches to `gem push` and `gem yank` to make them work with
+  non-rubygems.org sources
+  [rubygems-source-features](https://github.com/kapoq/rubygems-source-features):
+  Cucumber features for Rubygems sources
 * [rubygems.org](https://github.com/rubygems/rubygems.org): 
   Daddy
 * [geminabox](https://github.com/cwninja/geminabox): 

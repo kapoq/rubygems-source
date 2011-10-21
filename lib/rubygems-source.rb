@@ -19,7 +19,7 @@ module Rubygems
         end
 
         def valid_gem_package?(file)
-          Gem::Package.open(open(file)) { |pkg| pkg.metadata }
+          Gem::Package.open(open(file)) { |pkg| @spec = pkg.metadata }
         rescue Gem::Package::FormatError
           false
         end
@@ -31,18 +31,11 @@ module Rubygems
 
       # PUSH
       post "/api/v1/gems" do
-        filename = path_to_gem(params[:file][:filename])
-        if File.exists?(filename)
-          status 409
+        body = StringIO.new(request.body.read)
+        if valid_gem_package?(body)
+          clear_gem_specs_and_update_gem_indices
         else
-          tempfile = params[:file][:tempfile]
-          tempfile.binmode
-          if valid_gem_package?(tempfile.path)
-            FileUtils.copy_file(tempfile.path, filename)
-            clear_gem_specs_and_update_gem_indices
-          else
-            status 403
-          end
+          status 403
         end
       end
 
