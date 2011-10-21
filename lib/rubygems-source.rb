@@ -1,3 +1,6 @@
+require "rubygems/package"
+require "rubygems/user_interaction"
+require "rubygems/indexer"
 require "sinatra/base"
 
 module Rubygems
