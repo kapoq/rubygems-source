@@ -12,6 +12,7 @@ Gem::Specification.new do |s|
   s.description = "A Rubygems remote source server that implements the core Rubygems web API (gem indicies, specs, push, and yank). Wins for local and private gem servers."
 
   s.add_dependency "sinatra"
+  s.add_dependency "builder"
   
   s.add_development_dependency "cucumber"
   s.add_development_dependency "rspec"
